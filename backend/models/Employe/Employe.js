@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const EmployeSchema = new mongoose.Schema({
     dateEntree: { type: Date, required: true },
@@ -15,4 +16,23 @@ const EmployeSchema = new mongoose.Schema({
     mdp: {type: String, required: true}
 }, {timestamps: true});
 
+
+// Login (findByEmailAndMdp)
+EmployeSchema.statics.findByEmailAndMdp = async function (email, mdp) {
+    const employe = await this.findOne({ email });
+    
+    if (!employe || !(await bcrypt.compare(mdp, employe.mdp))) {
+        throw new Error('Email ou mot de passe incorrect'); 
+    }
+    console.log("employe obtenu par email et mdp :", employe);
+    return employe; 
+}
+
+// Avant d'enregistrer un employe, cryptage mot de passe
+EmployeSchema.pre('save', async function (next) {
+    if (this.isModified('mdp')) {
+      this.mdp = await bcrypt.hash(this.mdp, 10); 
+    }
+    next();
+});
 module.exports = mongoose.model('Employe', EmployeSchema);

@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken');
 
-const verifyAuthToken = (req, res, next) => {
+const verifyAuthMecanicienToken = (req, res, next) => {
     console.log("Middleware Auth exécuté !");
     console.log("Requête sur :", req.path);
 
-    if (req.path === "/client/login" || req.path === "/client/logout") {
+    if (req.path === "/mecanicien/login" || req.path === "/mecanicien/logout") {
         return next();
     }
 
@@ -28,13 +28,13 @@ const verifyAuthToken = (req, res, next) => {
 
         console.log("Token valide. Utilisateur :", decoded);
 
-        req.client = decoded;
+        req.mecanicien = decoded;
 
         if (req.path === "/auth/checkToken") {
-            return res.status(200).json({ message: 'Token valide.', xConnecte: '0', client: decoded });
+            return res.status(200).json({ message: 'Token valide.', xConnecte: '0', mecanicien: decoded });
         }
         next();
     });
 };
 
-module.exports = verifyAuthToken;
+module.exports = verifyAuthMecanicienToken;

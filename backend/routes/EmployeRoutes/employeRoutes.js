@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const Employe = require('../../models/Employe/Employe');
-const authMiddleware = require('../../middlewares/authClientMiddleware');
 
 // insert
 router.post('/',async (req, res) => {
@@ -16,7 +15,7 @@ router.post('/',async (req, res) => {
 });
 
 // Liste
-router.get('/',authMiddleware, async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const nomEmploye = await Employe.find()
         .populate('idRole');

@@ -68,6 +68,8 @@ app.use('/stockPiece', require('./routes/ManagerRoutes/stockPieceRoutes'));
 app.use('/client', require('./routes/ClientRoutes/clientRoutes'));
 app.use('/modeleVoiture', require('./routes/ManagerRoutes/modeleVoitureRoutes'));
 app.use('/voitureClient', require('./routes/ClientRoutes/voitureClientRoutes'));
+app.use('/manager', require('./routes/managerRoutes'));
+app.use('/mecanicien', require('./routes/mecanicienRoutes'));
 
 app.use((req, res, next) => {
     console.log("Headers finaux envoyés :", res.getHeaders());

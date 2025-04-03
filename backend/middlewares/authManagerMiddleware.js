@@ -1,10 +1,10 @@
 const jwt = require('jsonwebtoken');
 
-const verifyAuthToken = (req, res, next) => {
+const verifyAuthManagerToken = (req, res, next) => {
     console.log("Middleware Auth exécuté !");
     console.log("Requête sur :", req.path);
 
-    if (req.path === "/client/login" || req.path === "/client/logout") {
+    if (req.path === "/manager/login" || req.path === "/manager/logout") {
         return next();
     }
 
@@ -31,10 +31,10 @@ const verifyAuthToken = (req, res, next) => {
         req.client = decoded;
 
         if (req.path === "/auth/checkToken") {
-            return res.status(200).json({ message: 'Token valide.', xConnecte: '0', client: decoded });
+            return res.status(200).json({ message: 'Token valide.', xConnecte: '0', manager: decoded });
         }
         next();
     });
 };
 
-module.exports = verifyAuthToken;
+module.exports = verifyAuthManagerToken;
