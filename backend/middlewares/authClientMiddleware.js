@@ -13,6 +13,7 @@ module.exports = async (req, res, next) => {
         
         const token = req.header('Authorization')?.split(' ')[1];
         console.log('Token : ', token);
+        res.setHeader('Authorization', token);
         
         if (!token) {
             res.setHeader('X-Connecte', '1');  
