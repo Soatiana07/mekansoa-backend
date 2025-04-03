@@ -20,14 +20,7 @@ module.exports = async (req, res, next) => {
             return res.status(401).json({ message: 'Accès refusé. Aucun token fourni.' });
         }
 
-        // const decoded = jwt.verify(token, process.env.JWT_SECRET || 'mekansoa');
-        jwt.verify(token, process.env.JWT_SECRET || 'mekansoa', (err, decoded) => {
-            if (err) {
-              return res.status(401).json({ message: 'Token expiré ou invalide' });
-            }
-            req.user = decoded;
-            next();
-        });
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'mekansoa');
         console.log('Decoded : ', decoded);
         
         req.client = decoded;
