@@ -40,7 +40,7 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = async (req, res, next) => {
-    try { 
+    try {
         console.log("Middleware auth - Path :", req.path);
 
         if (req.path === "/client/login" || req.path === "/client/logout" || req.path === "/client") {
@@ -48,29 +48,33 @@ module.exports = async (req, res, next) => {
         }
 
         console.log("Headers reçus via req :", req.headers);
-        
+
         const token = req.header('Authorization')?.split(' ')[1];
         console.log('Token :', token);
-        
+
         if (!token) {
-            return res.status(401).json({ 
-                message: 'Accès refusé. Aucun token fourni.', 
-                xConnecte: '1'  // ➜ Ajout de X-Connecte dans la réponse JSON
+            return res.status(401).json({
+                message: 'Accès refusé. Aucun token fourni.',
+                xConnecte: '1',  // xConnecte dans la réponse JSON
             });
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET || 'mekansoa');
         console.log('Decoded :', decoded);
-        
+
         req.client = decoded;
 
-        // ➜ Ajout de X-Connecte dans la réponse JSON
-        res.locals.xConnecte = '0';  
-        next();
+        // Si le token est valide, ajouter xConnecte dans la réponse JSON
+        return res.status(200).json({
+            message: 'Token valide.',
+            xConnecte: '0',  // Token valide
+            user: decoded,   // Ajouter les informations du client ou d'autres données
+        });
+
     } catch (error) {
-        return res.status(401).json({ 
-            message: 'Token invalide ou expiré.', 
-            xConnecte: '1'  // ➜ Ajout de X-Connecte dans la réponse JSON
+        return res.status(401).json({
+            message: 'Token invalide ou expiré.',
+            xConnecte: '1',  // xConnecte dans la réponse JSON en cas d'erreur
         });
     }
 };
