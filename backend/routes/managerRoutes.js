@@ -116,3 +116,5 @@ router.get('/:token', async (req, res) => {
         res.status(500).json({ error: "Erreur : " + error.message });
     }
 });
+
+module.exports = router;

@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 // const authMiddleware = require('./middlewares/authClientMiddleware');
 const verifyAuthToken = require('./middlewares/authClientMiddleware'); 
+const verifyAuthMecanicienToken = require('./middlewares/authMecanicienMiddleware'); 
+const verifyAuthManagerToken = require('./middlewares/authManagerMiddleware'); 
 
 require('dotenv').config();
 
@@ -27,13 +29,22 @@ app.use((req, res, next) => {
 app.use(express.json());
 // app.use(authMiddleware);
 
-// Middleware global (s'applique à toutes les routes sauf celles exclues dans le middleware)
 app.use(verifyAuthToken);
+app.use(verifyAuthMecanicienToken);
+app.use(verifyAuthManagerToken);
 
-// Route pour vérifier le token (sera gérée par le middleware)
+
 app.get('/auth/checkToken', (req, res) => {
-    // La réponse est déjà envoyée par `verifyAuthToken` si cette route est appelée.
+    
 });
+app.get('/auth/checkTokenMecanicien', (req, res) => {
+    
+});
+
+app.get('/auth/checkTokenManager', (req, res) => {
+    
+});
+
 
 const PORT = process.env.PORT || 5000;
 // Connexion a MongoDB
