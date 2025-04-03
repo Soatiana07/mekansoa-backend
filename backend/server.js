@@ -30,15 +30,15 @@ app.use(express.json());
 // app.use(authMiddleware);
 
 app.get('/auth/checkToken', verifyAuthToken, (req, res) => {
-    res.json({ message: "Client authentifié" });
+    // res.json({ message: "Client authentifié" });
 });
 
 app.get('/auth/checkTokenMecanicien', verifyAuthMecanicienToken, (req, res) => {
-    res.json({ message: "Mécanicien authentifié" });
+    // res.json({ message: "Mécanicien authentifié" });
 });
 
 app.get('/auth/checkTokenManager', verifyAuthManagerToken, (req, res) => {
-    res.json({ message: "Manager authentifié" });
+    // res.json({ message: "Manager authentifié" });
 });
 
 
