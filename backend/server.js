@@ -1,7 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const authMiddleware = require('./middlewares/authClientMiddleware');
+// const authMiddleware = require('./middlewares/authClientMiddleware');
+const verifyAuthToken = require('./middlewares/authMiddleware'); 
+
 require('dotenv').config();
 
 const app = express();
@@ -23,7 +25,7 @@ app.use((req, res, next) => {
 });
 
 app.use(express.json());
-app.use(authMiddleware);
+// app.use(authMiddleware);
 
 // Middleware global (s'applique à toutes les routes sauf celles exclues dans le middleware)
 app.use(verifyAuthToken);
