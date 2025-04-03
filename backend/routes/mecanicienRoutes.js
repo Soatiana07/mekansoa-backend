@@ -1,6 +1,6 @@
 const express = require('express');
-const Employe = require('../../models/Employe/Employe');
-const MecanicienToken = require('../../models/Employe/MecanicienToken');
+const Employe = require('../models/Employe/Employe');
+const MecanicienToken = require('../models/Employe/MecanicienToken');
 const router = express.Router();
 
 // Login

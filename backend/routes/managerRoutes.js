@@ -1,6 +1,6 @@
 const express = require('express');
-const Employe = require('../../models/Employe/Employe');
-const ManagerToken = require('../../models/Manager/ManagerToken');
+const Employe = require('../models/Employe/Employe');
+const ManagerToken = require('../models/Manager/ManagerToken');
 const router = express.Router();
 
 // Login
