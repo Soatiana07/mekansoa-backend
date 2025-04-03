@@ -25,6 +25,13 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(authMiddleware);
 
+// Middleware global (s'applique à toutes les routes sauf celles exclues dans le middleware)
+app.use(verifyAuthToken);
+
+// Route pour vérifier le token (sera gérée par le middleware)
+app.get('/auth/checkToken', (req, res) => {
+    // La réponse est déjà envoyée par `verifyAuthToken` si cette route est appelée.
+});
 
 const PORT = process.env.PORT || 5000;
 // Connexion a MongoDB
