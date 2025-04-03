@@ -26,6 +26,7 @@ module.exports = async (req, res, next) => {
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) {
             if (err.name === 'TokenExpiredError') {
+                res.json({message: 'Token expiré.'});
                 return res.status(401).json({ message: 'Token expiré.' });
             }
             // Pour d'autres erreurs de token (par exemple, signature invalide)
