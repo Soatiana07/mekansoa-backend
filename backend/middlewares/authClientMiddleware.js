@@ -1,36 +1,43 @@
 const jwt = require('jsonwebtoken');
 
 module.exports = async (req, res, next) => {
-    // try { 
-        console.log("tonga aty zaaaaaa");
-        console.log("req.path :", req.path);
-        
-        if (req.path === "/client/login" || req.path === "/client/logout" || req.path === "/client") {
-            return next();
-        }
+    console.log("tonga aty zaaaaaa");
+    console.log("req.path :", req.path);
 
-        console.log("Headers reçus via req :", req.headers);
-        
-        const token = req.header('Authorization')?.split(' ')[1];
-        console.log('Token : ', token);
-        res.setHeader('Authorization', token);
-        
-        if (!token) {
-            // res.setHeader('X-Connecte', '1');  
-            return res.status(401).json({ message: 'Accès refusé. Aucun token fourni.' });
-        }
+    if (req.path === "/client/login" || req.path === "/client/logout" || req.path === "/client") {
+        return next();
+    }
 
-        
-        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-            if (err) {
-                if(err.name === 'TokenExpiredError'){
-                    return res.status(401).json({ message: 'Token expiré.' });
-                }       
+    console.log("Headers reçus via req :", req.headers);
+
+    // Essayez de récupérer le token depuis les headers
+    const token = req.header('Authorization')?.split(' ')[1];
+
+    // Si le token est absent ou invalide, renvoyez une réponse 401
+    if (!token) {
+        return res.status(401).json({ message: 'Accès refusé. Aucun token fourni.' });
+    }
+
+    // Si le token est valide, continuez avec la vérification
+    console.log('Token : ', token);
+    res.setHeader('Authorization', `Bearer ${token}`);
+
+    // Vérifiez si le token est valide
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+            if (err.name === 'TokenExpiredError') {
+                return res.status(401).json({ message: 'Token expiré.' });
             }
-            req.client = decoded;
-            next();
-        });
-        
+            // Pour d'autres erreurs de token (par exemple, signature invalide)
+            return res.status(401).json({ message: 'Token invalide.' });
+        }
+
+        // Si le token est valide, assignez le client au request object et continuez
+        req.client = decoded;
+        next();
+    });
+};
+
         
         // res.setHeader('X-Connecte', '0');  
         // console.log('Header X-Connecte ajoutéeeeeee:', res.getHeaders('X-Connecte'));
@@ -43,7 +50,7 @@ module.exports = async (req, res, next) => {
     //     }
     //     return res.status(401).json({ message: 'Token invalide ou expiré.' });
     // }
-};
+// };
 
 // const jwt = require('jsonwebtoken');
 
