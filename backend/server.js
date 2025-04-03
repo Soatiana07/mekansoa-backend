@@ -31,7 +31,7 @@ app.use(express.json());
 
 app.use(verifyAuthToken);
 // app.use(verifyAuthMecanicienToken);
-// app.use(verifyAuthManagerToken);
+app.use(verifyAuthManagerToken);
 
 
 app.get('/auth/checkToken', (req, res) => {
@@ -41,9 +41,9 @@ app.get('/auth/checkToken', (req, res) => {
     
 // });
 
-// app.get('/auth/checkTokenManager', (req, res) => {
+app.get('/auth/checkTokenManager', (req, res) => {
     
-// });
+});
 
 
 const PORT = process.env.PORT || 5000;
