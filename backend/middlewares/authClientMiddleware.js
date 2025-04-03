@@ -52,26 +52,25 @@ module.exports = async (req, res, next) => {
         const token = req.header('Authorization')?.split(' ')[1];
         console.log('Token :', token);
         
-        if (token) {
-            res.setHeader('Authorization', token);
-        }
-
         if (!token) {
-            res.setHeader('X-Connecte', '1');  
-            return res.status(401).json({ message: 'Accès refusé. Aucun token fourni.' });
+            return res.status(401).json({ 
+                message: 'Accès refusé. Aucun token fourni.', 
+                xConnecte: '1'  // ➜ Ajout de X-Connecte dans la réponse JSON
+            });
         }
 
         const decoded = jwt.verify(token, process.env.JWT_SECRET || 'mekansoa');
         console.log('Decoded :', decoded);
         
         req.client = decoded;
-        res.setHeader('X-Connecte', '0');  
 
-        console.log('Headers envoyés dans la réponse:', res.getHeaders());
-
+        // ➜ Ajout de X-Connecte dans la réponse JSON
+        res.locals.xConnecte = '0';  
         next();
     } catch (error) {
-        res.setHeader('X-Connecte', '1');  
-        return res.status(401).json({ message: 'Token invalide ou expiré.' });
+        return res.status(401).json({ 
+            message: 'Token invalide ou expiré.', 
+            xConnecte: '1'  // ➜ Ajout de X-Connecte dans la réponse JSON
+        });
     }
 };
