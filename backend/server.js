@@ -29,20 +29,16 @@ app.use((req, res, next) => {
 app.use(express.json());
 // app.use(authMiddleware);
 
-app.use(verifyAuthToken);
-// app.use(verifyAuthMecanicienToken);
-app.use(verifyAuthManagerToken);
-
-
-app.get('/auth/checkToken', (req, res) => {
-    
+app.get('/auth/checkToken', verifyAuthToken, (req, res) => {
+    res.json({ message: "Client authentifié" });
 });
-// app.get('/auth/checkTokenMecanicien', (req, res) => {
-    
-// });
 
-app.get('/auth/checkTokenManager', (req, res) => {
-    
+app.get('/auth/checkTokenMecanicien', verifyAuthMecanicienToken, (req, res) => {
+    res.json({ message: "Mécanicien authentifié" });
+});
+
+app.get('/auth/checkTokenManager', verifyAuthManagerToken, (req, res) => {
+    res.json({ message: "Manager authentifié" });
 });
 
 
