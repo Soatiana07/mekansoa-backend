@@ -27,11 +27,11 @@ module.exports = async (req, res, next) => {
         if (err) {
             if (err.name === 'TokenExpiredError') {
                 // res.json({message: 'Token expiré.'});
-                req.message = 'Token expiré.';
-                return res.status(401).json({ message: 'Token expiré.' });
+                // req.message = 'Token expiré.';
+                return res.json({ message: 'Token expiré.' });
             }
             // Pour d'autres erreurs de token (par exemple, signature invalide)
-            return res.status(401).json({ message: 'Token invalide.' });
+            return res.json({ message: 'Token invalide.' });
         }
 
         // Si le token est valide, assignez le client au request object et continuez
