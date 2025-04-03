@@ -14,7 +14,8 @@ router.post('/', async (req, res) => {
         const demande = new DemandeDevis({
             dateDemandeDevis,
             idVoitureClient,
-            isDomicile
+            isDomicile,
+            etat: 0
         });
         await demande.save();
 
@@ -36,7 +37,7 @@ router.post('/', async (req, res) => {
             }
         });
 
-        const text = "Le client a soumis une demande de devis en date du " + dateDemandeDevis;
+        const text = "Le client a soumis une demande de devis en date du " + dateDemandeDevis+" avec la numero devis "+demande.numeroDevis;
         const mailOptions = {
             from: 'kantomiharizo@gmail.com',
             to: "kantomiharizo@gmail.com",
@@ -126,7 +127,7 @@ router.post('/send-email', async (req, res) => {
 });
 
 router.post('/envoieDemandeDevis', upload.single('attachment'), async (req, res) => {
-    const { to, subject, text } = req.body;
+    const { to, subject, text,idDemandeDevis } = req.body;
     const attachment = req.file; // Récupération du fichier PDF
 
     const transporter = nodemailer.createTransport({
@@ -153,6 +154,9 @@ router.post('/envoieDemandeDevis', upload.single('attachment'), async (req, res)
     let reponse = "";
     try {
         const info = await transporter.sendMail(mailOptions);
+        const demande = await DemandeDevis.findOne({ _id: idDemandeDevis });
+            demande.etat =1
+        await demande.save();
         console.log('Email envoyé : ' + info.response);
         reponse = "envoyer";
         res.json(reponse);
@@ -195,8 +199,6 @@ router.post('/ajoutPieceDemandeDevis', async (req, res) => {
             }
         }
 
-
-
         const pieces = req.body.details;
         if (!pieces || pieces.length === 0) {
             console.log("Aucune pièce à ajouter.");
@@ -216,6 +218,44 @@ router.post('/ajoutPieceDemandeDevis', async (req, res) => {
     } catch (error) {
         console.error('Erreur lors de l\'envoi :', error);
         res.status(400).json({ message: error.message });
+    }
+});
+
+
+router.post('/filtreDemandeDevis', async (req, res) => {
+    const {  dateDebut, dateFin, numeroDev } = req.body;  
+    console.log("dateDebuttt ",dateDebut);
+    try {
+        let filtre = {};
+
+        if (dateDebut && dateFin) {
+            filtre.dateDemandeDevis = { $gte: new Date(dateDebut), $lte: new Date(dateFin) };
+        } else if (dateDebut) {
+            filtre.dateDemandeDevis = { $gte: new Date(dateDebut) };
+        } else if (dateFin) {
+            filtre.dateDemandeDevis = { $lte: new Date(dateFin) };
+        }
+
+        if (numeroDev) {
+            filtre.numeroDevis = { $regex: numeroDev, $options: 'i' };
+        }
+
+        const demande = await DemandeDevis.find(filtre)
+        .populate({
+            path: "idVoitureClient",
+            populate: [
+                { path: "idClient" },
+                { path: "idAnnee" },
+                { path: "idGeneration" },
+                { path: "idMarque" },
+                { path: "idModele" }
+            ]
+        })
+        .exec();
+
+        res.json(demande);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
 });
 

@@ -118,7 +118,9 @@ router.get('/validTokens', async (req, res) => {
 // Check token
 router.get('/checkToken', async (req, res) => {
     try {
+        console.log("bbooonnjjoouurr");
         const { tokenClient } = req.body;
+        console.log("tokenClient ",tokenClient);
         const token = await ClientToken.getClientTokenByValue(tokenClient);
         if(!token){
             return res.status(401).json({ message: 'Token expiré 1' });

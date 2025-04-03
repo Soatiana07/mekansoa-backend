@@ -29,6 +29,7 @@ router.get('/', async (req, res) => {
 
 router.get('/getDetailServiceDemandeDevisById/:idDemandeDevis', async (req, res) => {
     try {
+        console.log("inty ahoo");
         const detail = await DetailsDemandeDevis.find({
             idDemandeDevis: req.params.idDemandeDevis,
             idService: { $exists: true, $ne: null } 

@@ -77,6 +77,10 @@ app.use('/modeleVoiture', require('./routes/ManagerRoutes/modeleVoitureRoutes'))
 app.use('/voitureClient', require('./routes/ClientRoutes/voitureClientRoutes'));
 app.use('/manager', require('./routes/managerRoutes'));
 app.use('/mecanicien', require('./routes/mecanicienRoutes'));
+app.use('/demandeDevis', require('./routes/ClientRoutes/demandeDevisRoutes'));
+app.use('/detailDemandeDevis', require('./routes/ClientRoutes/detailsDemandeDevis'));
+app.use('/planningEmploye', require('./routes/EmployeRoutes/planningEmployeRoutes'));
+app.use('/facture', require('./routes/ClientRoutes/factureRoutes'));
 
 app.use((req, res, next) => {
     console.log("Headers finaux envoyés :", res.getHeaders());
