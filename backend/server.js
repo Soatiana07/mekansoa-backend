@@ -30,20 +30,20 @@ app.use(express.json());
 // app.use(authMiddleware);
 
 app.use(verifyAuthToken);
-app.use(verifyAuthMecanicienToken);
-app.use(verifyAuthManagerToken);
+// app.use(verifyAuthMecanicienToken);
+// app.use(verifyAuthManagerToken);
 
 
 app.get('/auth/checkToken', (req, res) => {
     
 });
-app.get('/auth/checkTokenMecanicien', (req, res) => {
+// app.get('/auth/checkTokenMecanicien', (req, res) => {
     
-});
+// });
 
-app.get('/auth/checkTokenManager', (req, res) => {
+// app.get('/auth/checkTokenManager', (req, res) => {
     
-});
+// });
 
 
 const PORT = process.env.PORT || 5000;
