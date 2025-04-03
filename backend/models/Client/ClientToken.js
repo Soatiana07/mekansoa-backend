@@ -18,10 +18,10 @@ ClientTokenSchema.statics.generateToken = async function (client) {
     try {
         const payload = { idClient: client._id, email: client.email };
         const secretKey = process.env.JWT_SECRET || 'mekansoa'; 
-        const token = jwt.sign(payload, secretKey, { expiresIn: '10m' });
+        const token = jwt.sign(payload, secretKey, { expiresIn: '1m' });
 
         const dateExpiration = new Date();
-        dateExpiration.setSeconds(dateExpiration.getSeconds() + 10 * 60); 
+        dateExpiration.setSeconds(dateExpiration.getSeconds() + 1 * 60); 
 
         // Save
         const clientToken = new this({
